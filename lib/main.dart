@@ -1,42 +1,16 @@
+import 'dart:async';
+import 'package:zapdefiapp/common/injector_config.dart';
+import 'package:zapdefiapp/common/util/env/env.dart';
+import 'package:zapdefiapp/common/util/env/env_main.dart';
+import 'package:zapdefiapp/main_setup.dart' as setup;
 import 'package:flutter/material.dart';
+import 'package:zapdefiapp/presentation/app.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final container = InjectorConfig.setup();
+  container.registerSingleton<Env>((c) => EnvMain());
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'ZapDeFi'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-  final String title;
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: const Center(
-        child: Text('ZapDeFi'),
-      ),
-    );
-  }
+  await setup.config();
+  runApp(const App());
 }
