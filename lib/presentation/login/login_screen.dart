@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:zapdefiapp/common/injectore.dart';
 import 'package:zapdefiapp/presentation/splash/splash_provider.dart';
 
-class SplashScreen extends StatelessWidget implements AutoRouteWrapper {
+class LoginScreen extends StatelessWidget implements AutoRouteWrapper {
   final bool skipVideo;
 
   @override
@@ -15,7 +15,7 @@ class SplashScreen extends StatelessWidget implements AutoRouteWrapper {
     );
   }
 
-  const SplashScreen({
+  const LoginScreen({
     super.key,
     this.skipVideo = false,
   });

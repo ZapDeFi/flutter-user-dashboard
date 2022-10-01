@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:zapdefiapp/common/injectore.dart';
 import 'package:zapdefiapp/common/util/secure_storage_manager.dart';
+import 'package:zapdefiapp/presentation/login/login_screen.dart';
 import 'package:zapdefiapp/presentation/splash/splash_screen.dart';
 
 part 'main_app_router.dart';
@@ -29,7 +30,8 @@ Route<T> customRouteBuilder<T>(
   routes: <AutoRoute>[
     // authentication
     AutoRoute(page: SplashScreen),
-
+    AutoRoute(page: LoginScreen),
+    
     // dashboard
     // AutoRoute(
     //   page: DashboardScreen,
