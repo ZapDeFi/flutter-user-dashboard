@@ -63,6 +63,20 @@ class MainProvider extends ChangeNotifier {
   }
 
   void calculationLogic() {
+    final textLeft = _arithmeticLeftController.text;
+    final finalTextLeft = _tagValueInterceptor(textLeft);
+      if (finalTextLeft != textLeft){
+        _arithmeticLeftController.text = finalTextLeft;
+        notifyListeners();
+    }
+
+    final textRight = _arithmeticRightController.text;
+    final finalTextRight= _tagValueInterceptor(textRight);
+      if (finalTextRight != textRight){
+        _arithmeticRightController.text = finalTextRight;
+        notifyListeners();
+    }
+
     if (double.tryParse(_arithmeticLeftController.text) == null ||
         double.tryParse(_arithmeticRightController.text) == null) {
       return;
@@ -98,6 +112,24 @@ class MainProvider extends ChangeNotifier {
     _arithmeticRightController.addListener(() {
       calculationLogic();
     });
+
+    _conditionRightController.addListener(() {
+      final text = _conditionRightController.text;
+      final finalText = _tagValueInterceptor(text);
+      if (finalText != text){
+        _conditionRightController.text = finalText;
+        notifyListeners();
+      }
+    });
+
+    _conditionLeftController.addListener(() {
+      final text = _conditionLeftController.text;
+      final finalText = _tagValueInterceptor(text);
+      if (finalText != text){
+        _conditionLeftController.text = finalText;
+        notifyListeners();
+      }
+    });
   }
 
   void changeCondition(String value) {
@@ -115,6 +147,12 @@ class MainProvider extends ChangeNotifier {
       "id": uuid.toString(),
       "zap_type": "ROOT",
       "children": [],
+      "tag_value": [
+        {
+          "TOTAL",
+          300.0,
+        },
+      ],
     });
     notifyListeners();
   }
@@ -154,6 +192,12 @@ class MainProvider extends ChangeNotifier {
         "right": '\$${_arithmeticRightController.text}',
         "result": '\$$_arithmeticTotalValue'
       };
+      newNode['tag_value'] =  [
+        {
+          "TOTAL",
+          double.parse(_arithmeticTotalValue)
+      }
+      ];
     }
 
     Map<String, Object> currentNodForRoot = {
@@ -178,10 +222,9 @@ class MainProvider extends ChangeNotifier {
     print(_presetBasicRaw);
     _clear();
     notifyListeners();
-
   }
 
-  void _clear(){
+  void _clear() {
     _isCheckedForCondition == false;
     _conditionLeftController.text = '';
     _conditionRightController.text = '';
@@ -193,4 +236,22 @@ class MainProvider extends ChangeNotifier {
     _arithmeticValue = '+';
     _selectedNodeId = '';
   }
+
+  String _tagValueInterceptor(String input) {
+    print(input);
+    if (input.contains('\$')){
+      final newInput = input.replaceAll('\$', '');
+      final selectedNode = _presetBasicRaw
+        .firstWhere((element) => element['id'] == _selectedNodeId);
+    
+      final tags = selectedNode['tag_value'] as List<Set<Object>>;
+      final value = tags.map((e) => (e.first == newInput.toUpperCase()) ? e.last : input);
+
+      print(value.first.toString());
+      return value.first.toString();
+    } else {
+      return input;
+    }
+  }
+
 }

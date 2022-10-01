@@ -168,26 +168,34 @@ class MainScreen extends StatelessWidget {
       isScrollControlled: true,
       builder: (context) {
         final provider = context.watch<MainProvider>();
-        return SizedBox(
-          width: double.maxFinite,
-          child: ListView(
-            children: [
-              _checklist(provider),
-              if (provider.isCheckedForCondition) _conditionView(provider),
-              const SizedBox(
-                height: 12,
-              ),
-              _dropDownView(provider),
-              if (provider.conditionValue == 'Arithmetic')
-                _arithConditionView(provider),
-              ElevatedButton(
-                onPressed: provider.addNodeButtonEnabled ? () {
-                  provider.addNewNode();
-                  Navigator.pop(context);
-                } : null,
-                child: Text('Add New Node'),
-              )
-            ],
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 18),
+          child: SizedBox(
+            width: double.maxFinite,
+            child: ListView(
+              children: [
+                _checklist(provider),
+                if (provider.isCheckedForCondition) _conditionView(provider),
+                const SizedBox(
+                  height: 12,
+                ),
+                _dropDownView(provider),
+                if (provider.conditionValue == 'Arithmetic')
+                  _arithConditionView(provider),
+                const SizedBox(
+                  height: 12,
+                ),
+                ElevatedButton(
+                  onPressed: provider.addNodeButtonEnabled
+                      ? () {
+                          provider.addNewNode();
+                          Navigator.pop(context);
+                        }
+                      : null,
+                  child: Text('Add New Node'),
+                )
+              ],
+            ),
           ),
         );
       },
