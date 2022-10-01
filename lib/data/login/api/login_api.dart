@@ -1,4 +1,3 @@
-
 import 'package:dio/dio.dart';
 import 'package:zapdefiapp/common/client/http_client.dart';
 import 'package:zapdefiapp/data/login/models/login_request_model.dart';
@@ -23,5 +22,4 @@ class LoginApi implements LoginRepository {
     );
     return LoginResponseModel.fromJson(data);
   }
-
 }

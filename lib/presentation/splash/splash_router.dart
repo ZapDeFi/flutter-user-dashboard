@@ -1,7 +1,0 @@
-import 'package:zapdefiapp/presentation/router/router.dart';
-
-class SplashRouter extends MainAppRouter {
-    void routeLogin() {
-    router.replaceAll([LoginRoute()]);
-  }
-}

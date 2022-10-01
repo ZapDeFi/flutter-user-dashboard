@@ -8,7 +8,7 @@ part of 'injector_config.dart';
 
 class _$InjectorConfig extends InjectorConfig {
   @override
-  void _configureSplashScreen() {
+  void _configureCommon() {
     final KiwiContainer container = KiwiContainer();
     container
       ..registerSingleton(
@@ -16,9 +16,7 @@ class _$InjectorConfig extends InjectorConfig {
       ..registerSingleton((c) => SecureStorageManager())
       ..registerSingleton((c) => RootBackButtonDispatcher())
       ..registerSingleton((c) =>
-          DioClient(keyManager: c<SecureStorageManager>(), env: c<Env>()))
-      ..registerFactory((c) => SplashRouter())
-      ..registerFactory((c) => SplashProvider(router: c<SplashRouter>()));
+          DioClient(keyManager: c<SecureStorageManager>(), env: c<Env>()));
   }
 
   @override
@@ -32,5 +30,13 @@ class _$InjectorConfig extends InjectorConfig {
           (c) => LoginUsecase(loginRepository: c<LoginRepository>()))
       ..registerFactory((c) => LoginProvider(
           router: c<LoginRouter>(), loginUsecase: c<LoginUsecase>()));
+  }
+
+  @override
+  void _configureMain() {
+    final KiwiContainer container = KiwiContainer();
+    container
+      ..registerFactory((c) => MainRouter())
+      ..registerFactory((c) => MainProvider(router: c<MainRouter>()));
   }
 }

@@ -7,9 +7,9 @@ import 'package:zapdefiapp/data/login/api/login_api.dart';
 import 'package:zapdefiapp/domain/login/usecase/login_usecase.dart';
 import 'package:zapdefiapp/presentation/login/login_provider.dart';
 import 'package:zapdefiapp/presentation/login/login_router.dart';
+import 'package:zapdefiapp/presentation/main/main_provider.dart';
+import 'package:zapdefiapp/presentation/main/main_router.dart';
 import 'package:zapdefiapp/presentation/router/router.dart';
-import 'package:zapdefiapp/presentation/splash/splash_provider.dart';
-import 'package:zapdefiapp/presentation/splash/splash_router.dart';
 
 import '../domain/login/repositories/login_repository.dart';
 
@@ -27,7 +27,9 @@ abstract class InjectorConfig {
   static final resolve = container.resolve;
 
   void _configure() {
-    _configureSplashScreen();
+    _configureCommon();
+    _configureLogin();
+    _configureMain();
   }
 
   // ============ COMMON ========================
@@ -35,11 +37,7 @@ abstract class InjectorConfig {
   @Register.singleton(SecureStorageManager)
   @Register.singleton(RootBackButtonDispatcher)
   @Register.singleton(DioClient)
-
-  // ============ Splash Screen =================
-  @Register.factory(SplashRouter)
-  @Register.factory(SplashProvider)
-  void _configureSplashScreen();
+  void _configureCommon();
 
   // ============ Login =========================
   @Register.factory(LoginRouter)
@@ -48,4 +46,8 @@ abstract class InjectorConfig {
   @Register.factory(LoginProvider)
   void _configureLogin();
 
+  // ============ Main =========================
+  @Register.factory(MainRouter)
+  @Register.factory(MainProvider)
+  void _configureMain();
 }

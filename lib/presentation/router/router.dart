@@ -4,7 +4,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:zapdefiapp/common/injectore.dart';
 import 'package:zapdefiapp/common/util/secure_storage_manager.dart';
 import 'package:zapdefiapp/presentation/login/login_screen.dart';
-import 'package:zapdefiapp/presentation/splash/splash_screen.dart';
+import 'package:zapdefiapp/presentation/main/main_screen.dart';
 
 part 'main_app_router.dart';
 part 'router.gr.dart';
@@ -29,17 +29,8 @@ Route<T> customRouteBuilder<T>(
   customRouteBuilder: customRouteBuilder,
   routes: <AutoRoute>[
     // authentication
-    AutoRoute(page: SplashScreen),
     AutoRoute(page: LoginScreen),
-    
-    // dashboard
-    // AutoRoute(
-    //   page: DashboardScreen,
-    //   children: [
-    //     AutoRoute(page: MainScreen, maintainState: false, initial: true),
-    //     AutoRoute(page: MapScreen, maintainState: false),
-    //   ],
-    // ),
+    AutoRoute(page: MainScreen),
   ],
 )
 class AppRouter extends _$AppRouter {
@@ -72,9 +63,9 @@ class AppRouter extends _$AppRouter {
         await keyManager.getSecureKey(KeyType.refreshAuthKey);
 
     if (authToken == null || authTokenRefresh == null) {
-      return router.replaceAll([SplashRoute()]);
+      return router.replaceAll([const LoginRoute()]);
     } else {
-      return router.replaceAll([SplashRoute()]);
+      return router.replaceAll([const MainRoute()]);
     }
   }
 
@@ -84,7 +75,7 @@ class AppRouter extends _$AppRouter {
     switch (to) {
       case LogoutTo.splash:
         await keyManager.logout();
-        routes = [SplashRoute()];
+        routes = [const LoginRoute()];
         break;
     }
     return router.replaceAll(routes);

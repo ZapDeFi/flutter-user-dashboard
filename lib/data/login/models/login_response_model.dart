@@ -9,7 +9,6 @@ class LoginResponseModel {
   final String accessToken;
   final String refreshAccessToken;
 
-
   factory LoginResponseModel.fromJson(String str) =>
       LoginResponseModel.fromMap(json.decode(str) as Map<String, dynamic>);
 

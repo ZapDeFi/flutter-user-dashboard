@@ -2,28 +2,25 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zapdefiapp/common/injectore.dart';
-import 'package:zapdefiapp/presentation/splash/splash_provider.dart';
+import 'package:zapdefiapp/presentation/main/main_provider.dart';
 
-class SplashScreen extends StatelessWidget implements AutoRouteWrapper {
-  final bool skipVideo;
-
+class MainScreen extends StatelessWidget implements AutoRouteWrapper {
   @override
   Widget wrappedRoute(BuildContext context) {
-    return ChangeNotifierProvider<SplashProvider>(
+    return ChangeNotifierProvider<MainProvider>(
       create: (_) => Injector.resolve(),
       child: this,
     );
   }
 
-  const SplashScreen({
+  const MainScreen({
     super.key,
-    this.skipVideo = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: Text("JUST A TEXT"),
+      child: Text("Main"),
     );
   }
 }

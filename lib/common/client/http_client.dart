@@ -75,7 +75,8 @@ class DioClient {
   }
 
   Future<Map<String, String>> _generateRequestHeader(
-    final HeaderTokenType? headerTokenType, ) async {
+    final HeaderTokenType? headerTokenType,
+  ) async {
     return {
       ...await _generateAuthorizationHeader(headerTokenType),
     };
