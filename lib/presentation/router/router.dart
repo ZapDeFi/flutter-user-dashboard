@@ -31,7 +31,6 @@ Route<T> customRouteBuilder<T>(
   ],
 )
 class AppRouter extends _$AppRouter {
-
   // ignore: use_super_parameters
   AppRouter() : super();
 

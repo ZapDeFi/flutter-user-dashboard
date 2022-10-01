@@ -19,7 +19,6 @@ Future _parseJson(String text) {
 }
 
 class DioClient {
-
   late final Dio dio;
   final String host;
 
@@ -62,7 +61,7 @@ class DioClient {
         final code =
             response.statusCode ?? ExceptionConstants.internalServerError;
         if (code == 200) {
-           return body['data'];
+          return body['data'];
         } else {
           final message = body['message'] as String?;
           throw ServerException(
@@ -144,7 +143,6 @@ class DioClient {
   }) async {
     try {
       {
-
         final response = await dio.patch(
           path,
           data: json,
@@ -167,7 +165,7 @@ class DioClient {
             message: message,
           );
         }
-      } 
+      }
     } on CancelException {
       rethrow;
     } on ServerException {

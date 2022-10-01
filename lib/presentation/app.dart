@@ -1,15 +1,19 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:zapdefiapp/common/injectore.dart';
+import 'package:zapdefiapp/presentation/main/main_provider.dart';
 import 'package:zapdefiapp/presentation/router/router.dart';
-import 'package:zapdefiapp/presentation/themes/theme_data.dart';
 
 class App extends StatelessWidget {
-  const App();
+  const App({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const _MainApp();
+    return ChangeNotifierProvider<MainProvider>(
+      create: (_) => Injector.resolve(),
+      child: const _MainApp(),
+    );
   }
 }
 
@@ -23,7 +27,7 @@ class _MainApp extends StatelessWidget {
     return MaterialApp.router(
       title: 'ZapDeFi',
       themeMode: ThemeMode.dark,
-      darkTheme: AppTheme().darkTheme,
+      darkTheme: ThemeData.light(),
       debugShowCheckedModeBanner: false,
       routeInformationParser: router.defaultRouteParser(),
       routerDelegate:
