@@ -151,7 +151,7 @@ class MainScreen extends StatelessWidget {
             }).toList(),
           ),
         ),
-         Expanded(
+        Expanded(
           child: TextField(
             controller: provider.arithmeticRightController,
             decoration: const InputDecoration(hintText: "Right"),
@@ -173,8 +173,7 @@ class MainScreen extends StatelessWidget {
           child: ListView(
             children: [
               _checklist(provider),
-              if (provider.isCheckedForCondition) 
-                _conditionView(provider),
+              if (provider.isCheckedForCondition) _conditionView(provider),
               const SizedBox(
                 height: 12,
               ),
@@ -182,10 +181,10 @@ class MainScreen extends StatelessWidget {
               if (provider.conditionValue == 'Arithmetic')
                 _arithConditionView(provider),
               ElevatedButton(
-                onPressed: () {
+                onPressed: provider.addNodeButtonEnabled ? () {
                   provider.addNewNode();
                   Navigator.pop(context);
-                },
+                } : null,
                 child: Text('Add New Node'),
               )
             ],
@@ -204,12 +203,12 @@ class MainScreen extends StatelessWidget {
     for (var element in provider.rawPresetBasic) {
       if (element.containsKey('id') && element.containsKey('children')) {
         final children = element["children"] as List<dynamic>;
-        final test = children.map((item) {
-          final id = item as Map;
-          return id['id'];
-        },).toList();
-
-        print('TEST $test');
+        final test = children.map(
+          (item) {
+            final id = item as Map;
+            return id['id'];
+          },
+        ).toList();
 
         newList.add({'id': element["id"]!, 'next': test});
       }
@@ -217,8 +216,6 @@ class MainScreen extends StatelessWidget {
 
     const jsonEncoder = JsonEncoder();
     final stringArray = jsonEncoder.convert(newList);
-
-    print(stringArray);
 
     return Scaffold(
       body: SafeArea(
