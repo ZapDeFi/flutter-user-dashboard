@@ -15,12 +15,21 @@ class MainScreen extends StatelessWidget implements AutoRouteWrapper {
 
   const MainScreen({
     super.key,
-  });
+  }); 
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text("Main"),
+    final provider = context.watch<MainProvider>();
+
+    return Scaffold(
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          SafeArea(
+            child: Text('askjdhgkas')
+          ),
+        ],
+      ),
     );
   }
 }
