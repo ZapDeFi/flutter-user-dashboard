@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:zapdefiapp/common/client/http_client.dart';
 import 'package:zapdefiapp/common/util/env/env.dart';
+import 'package:zapdefiapp/data/login/api/login_api.dart';
+import 'package:zapdefiapp/domain/login/repositories/login_repository.dart';
+import 'package:zapdefiapp/domain/login/usecase/login_usecase.dart';
 
 import 'package:zapdefiapp/presentation/main/main_provider.dart';
 import 'package:zapdefiapp/presentation/main/main_router.dart';
@@ -33,6 +36,8 @@ abstract class InjectorConfig {
 
   // ============ Main =========================
   @Register.factory(MainRouter)
+  @Register.factory(LoginRepository, from: LoginApi)
+  @Register.factory(LoginUsecase)
   @Register.factory(MainProvider)
   void _configureMain();
 }

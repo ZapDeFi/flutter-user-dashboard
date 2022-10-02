@@ -21,6 +21,10 @@ class _$InjectorConfig extends InjectorConfig {
     final KiwiContainer container = KiwiContainer();
     container
       ..registerFactory((c) => MainRouter())
+      ..registerFactory<LoginRepository>(
+          (c) => LoginApi(dioClient: c<DioClient>()))
+      ..registerFactory(
+          (c) => LoginUsecase(loginRepository: c<LoginRepository>()))
       ..registerFactory((c) => MainProvider(router: c<MainRouter>()));
   }
 }

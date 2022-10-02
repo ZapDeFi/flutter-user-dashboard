@@ -52,9 +52,6 @@ class DioClient {
           path,
           cancelToken: cancelToken,
           queryParameters: queryParameters,
-          options: Options(
-            sendTimeout: timeout?.inMilliseconds,
-          ),
         );
 
         final body = response.data as Map;

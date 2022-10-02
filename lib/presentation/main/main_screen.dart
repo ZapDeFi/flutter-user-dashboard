@@ -162,6 +162,119 @@ class MainScreen extends StatelessWidget {
     );
   }
 
+  Widget _actionView(MainProvider provider) {
+    return DropdownButton<String>(
+      value: provider.actionValue,
+      icon: const Icon(Icons.arrow_downward),
+      elevation: 16,
+      style: const TextStyle(color: Colors.deepPurple),
+      underline: Container(
+        height: 2,
+        color: Colors.deepPurpleAccent,
+      ),
+      onChanged: (String? value) {
+        provider.changeAction(value!);
+      },
+      items: provider.actionList.map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _dropDownSwapView(MainProvider provider) {
+    return DropdownButton<String>(
+      value: provider.swapWalletItemSelected,
+      icon: const Icon(Icons.arrow_downward),
+      elevation: 16,
+      style: const TextStyle(color: Colors.deepPurple),
+      underline: Container(
+        height: 2,
+        color: Colors.deepPurpleAccent,
+      ),
+      onChanged: (String? value) {
+        provider.changeSwapValueItem(value!);
+      },
+      items: provider.walletItems.map<DropdownMenuItem<String>>((e) {
+        return DropdownMenuItem<String>(
+          value: e.name,
+          child: Text(e.name),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _dropDownForView(MainProvider provider) {
+    return DropdownButton<String>(
+      value: provider.forWalletItemSelected,
+      icon: const Icon(Icons.arrow_downward),
+      elevation: 16,
+      style: const TextStyle(color: Colors.deepPurple),
+      underline: Container(
+        height: 2,
+        color: Colors.deepPurpleAccent,
+      ),
+      onChanged: (String? value) {
+        provider.changeForValueItem(value!);
+      },
+      items: provider.walletItems.map<DropdownMenuItem<String>>((e) {
+        return DropdownMenuItem<String>(
+          value: e.name,
+          child: Text(e.name),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _swapView(MainProvider provider) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('Swap'),
+                TextField(
+                  controller: provider.swapAmountController,
+                  decoration: const InputDecoration(hintText: "Amount"),
+                ),
+                const Text('\$6,554.83'),
+              ],
+            )),
+            Expanded(child: _dropDownSwapView(provider)),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            Icon(Icons.arrow_circle_down),
+            Icon(Icons.arrow_circle_up),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Text('For'),
+                Text('11357.3'),
+                Text('\$6,513.30 (-0.607%)'),
+              ],
+            )),
+            Expanded(child: _dropDownForView(provider)),
+          ],
+        ),
+      ],
+    );
+  }
+
   void _showBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -182,6 +295,8 @@ class MainScreen extends StatelessWidget {
                 _dropDownView(provider),
                 if (provider.conditionValue == 'Arithmetic')
                   _arithConditionView(provider),
+                if (provider.conditionValue == 'Action') _actionView(provider),
+                if (provider.actionValue == 'Swap') _swapView(provider),
                 const SizedBox(
                   height: 12,
                 ),
@@ -193,7 +308,7 @@ class MainScreen extends StatelessWidget {
                         }
                       : null,
                   child: Text('Add New Node'),
-                )
+                ),
               ],
             ),
           ),
@@ -227,23 +342,36 @@ class MainScreen extends StatelessWidget {
 
     return Scaffold(
       body: SafeArea(
-        child: DirectGraph(
-          list: nodeInputFromJson(stringArray),
-          cellWidth: 200.0,
-          cellPadding: 24.0,
-          onNodePanDown: (details, node) {
-            provider.didSelectNode(node.id);
-            _showBottomSheet(context);
-          },
-          orientation: MatrixOrientation.Vertical,
-          builder: (context, node) {
-            return Container(
-              width: 200,
-              height: 80,
-              color: Colors.black,
-              child: _nodeItem(context, node.id),
-            );
-          },
+        child: Column(
+          children: [
+            Expanded(
+              child: DirectGraph(
+                list: nodeInputFromJson(stringArray),
+                cellWidth: 200.0,
+                cellPadding: 24.0,
+                onNodePanDown: (details, node) {
+                  provider.didSelectNode(node.id);
+                  _showBottomSheet(context);
+                },
+                orientation: MatrixOrientation.Vertical,
+                builder: (context, node) {
+                  return Container(
+                    width: 200,
+                    height: 80,
+                    color: Colors.black,
+                    child: _nodeItem(context, node.id),
+                  );
+                },
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                provider.play();
+              },
+              child: Text('START TRADING'),
+            ),
+            const SizedBox(height: 20),
+          ],
         ),
       ),
     );
