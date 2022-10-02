@@ -131,20 +131,6 @@ class MainProvider extends ChangeNotifier {
   }
 
   void calculationLogic() {
-    final textLeft = _arithmeticLeftController.text;
-    final finalTextLeft = _tagValueInterceptor(textLeft);
-    if (finalTextLeft != textLeft) {
-      _arithmeticLeftController.text = finalTextLeft;
-      notifyListeners();
-    }
-
-    final textRight = _arithmeticRightController.text;
-    final finalTextRight = _tagValueInterceptor(textRight);
-    if (finalTextRight != textRight) {
-      _arithmeticRightController.text = finalTextRight;
-      notifyListeners();
-    }
-
     if (double.tryParse(_arithmeticLeftController.text) == null ||
         double.tryParse(_arithmeticRightController.text) == null) {
       return;
@@ -181,23 +167,6 @@ class MainProvider extends ChangeNotifier {
       calculationLogic();
     });
 
-    _conditionRightController.addListener(() {
-      final text = _conditionRightController.text;
-      final finalText = _tagValueInterceptor(text);
-      if (finalText != text) {
-        _conditionRightController.text = finalText;
-        notifyListeners();
-      }
-    });
-
-    _conditionLeftController.addListener(() {
-      final text = _conditionLeftController.text;
-      final finalText = _tagValueInterceptor(text);
-      if (finalText != text) {
-        _conditionLeftController.text = finalText;
-        notifyListeners();
-      }
-    });
   }
 
   void changeCondition(String value) {
@@ -307,35 +276,30 @@ class MainProvider extends ChangeNotifier {
     _selectedNodeId = '';
   }
 
-  String _tagValueInterceptor(String input) {
-    if (input.contains('\$')) {
-      final newInput = input.replaceAll('\$', '');
-      final selectedNode = _presetBasicRaw
-          .firstWhere((element) => element['id'] == _selectedNodeId);
-
-      final tags = selectedNode['tag_value'] as List<Set<Object>>;
-      final value =
-          tags.map((e) => (e.first == newInput.toUpperCase()) ? e.last : input);
-      return value.first.toString();
-    } else {
-      return input;
-    }
-  }
-
   void play() async {
-  try {
+    _presetBasicRaw.forEach((element) {
+      element['id'] = int.parse(element['id']! as String);
+      final item = element['children']! as List<dynamic>;
+      item.forEach((element) {
+        final item = element as Map<String, Object>;
+        item['id'] = int.parse(item['id']! as String);
+      });
+    });
+
     const jsonEncoder = JsonEncoder();
     final stringArray = jsonEncoder.convert(_presetBasicRaw);
-    
+
+    print(stringArray);
+  try {
     var response = await Dio().put(
-      'http://www.google.com',
+      'http://34.201.118.102',
       data: stringArray,
     );
 
     print(response);
 
     var responsePost = await Dio().post(
-      'http://www.google.com'
+      'http://34.201.118.102/play'
     );
     print(responsePost);
   } catch (e) {
@@ -346,7 +310,7 @@ class MainProvider extends ChangeNotifier {
     void get() async {
   try {
     var response = await Dio().get(
-      'http://www.google.com'
+      'http://34.201.118.102'
     );
     print(response);
   } catch (e) {
