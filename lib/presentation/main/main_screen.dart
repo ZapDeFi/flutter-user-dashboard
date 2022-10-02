@@ -157,7 +157,13 @@ class MainScreen extends StatelessWidget {
             decoration: const InputDecoration(hintText: "Right"),
           ),
         ),
-        Text('= ${provider.arithmeticTotalValue}'),
+        const Text('='),
+        Expanded(
+          child: TextField(
+            controller: provider.arithmeticResultController,
+            decoration: const InputDecoration(hintText: "Left"),
+          ),
+        ),
       ],
     );
   }
@@ -339,6 +345,7 @@ class MainScreen extends StatelessWidget {
 
     const jsonEncoder = JsonEncoder();
     final stringArray = jsonEncoder.convert(newList);
+    print(stringArray);
 
     return Scaffold(
       body: SafeArea(

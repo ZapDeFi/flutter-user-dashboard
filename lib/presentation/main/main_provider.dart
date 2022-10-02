@@ -36,8 +36,6 @@ class MainProvider extends ChangeNotifier {
 
   String _arithmeticValue = '+';
   String get arithmeticValue => _arithmeticValue;
-  String _arithmeticTotalValue = '';
-  String get arithmeticTotalValue => _arithmeticTotalValue;
 
   final _arithmeticLeftController = TextEditingController();
   final _arithmeticRightController = TextEditingController();
@@ -45,6 +43,9 @@ class MainProvider extends ChangeNotifier {
       _arithmeticLeftController;
   TextEditingController get arithmeticRightController =>
       _arithmeticRightController;
+  final _arithmeticResultController = TextEditingController();
+  TextEditingController get arithmeticResultController =>
+      _arithmeticResultController;
 
   String _selectedNodeId = '';
   String get selectedNodeId => _selectedNodeId;
@@ -108,7 +109,6 @@ class MainProvider extends ChangeNotifier {
     required this.router,
   }) {
     _initRootNote();
-    _arithmeticCalculation();
   }
 
   void changeForValueItem(String value) {
@@ -128,45 +128,6 @@ class MainProvider extends ChangeNotifier {
 
   void didSelectNode(String id) {
     _selectedNodeId = id;
-  }
-
-  void calculationLogic() {
-    if (double.tryParse(_arithmeticLeftController.text) == null ||
-        double.tryParse(_arithmeticRightController.text) == null) {
-      return;
-    }
-
-    if (_arithmeticValue == '+') {
-      double total = double.parse(_arithmeticLeftController.text) +
-          double.parse(_arithmeticRightController.text);
-      _arithmeticTotalValue = total.toString();
-    }
-    if (_arithmeticValue == '-') {
-      double total = double.parse(_arithmeticLeftController.text) -
-          double.parse(_arithmeticRightController.text);
-      _arithmeticTotalValue = total.toString();
-    }
-    if (_arithmeticValue == '*') {
-      double total = double.parse(_arithmeticLeftController.text) *
-          double.parse(_arithmeticRightController.text);
-      _arithmeticTotalValue = total.toString();
-    }
-    if (_arithmeticValue == '/') {
-      double total = double.parse(_arithmeticLeftController.text) /
-          double.parse(_arithmeticRightController.text);
-      _arithmeticTotalValue = total.toString();
-    }
-    notifyListeners();
-  }
-
-  void _arithmeticCalculation() {
-    _arithmeticLeftController.addListener(() {
-      calculationLogic();
-    });
-    _arithmeticRightController.addListener(() {
-      calculationLogic();
-    });
-
   }
 
   void changeCondition(String value) {
@@ -213,16 +174,11 @@ class MainProvider extends ChangeNotifier {
     };
 
     if (zapType == 'ARITHMETIC') {
-      if (double.tryParse(_arithmeticLeftController.text) == null ||
-          double.tryParse(_arithmeticRightController.text) == null) {
-        return;
-      }
-
       newNode['data'] = {
         "operator": _arithmeticValue,
         "left": _arithmeticLeftController.text,
         "right": _arithmeticRightController.text,
-        "result": _arithmeticTotalValue
+        "result": _arithmeticResultController.text
       };
     }
 
@@ -270,7 +226,7 @@ class MainProvider extends ChangeNotifier {
     _conditionMiddleController.text = '';
     _arithmeticLeftController.text = '';
     _arithmeticRightController.text = '';
-    _arithmeticTotalValue = '';
+    _arithmeticResultController.text = '';
     _conditionValue = 'None';
     _arithmeticValue = '+';
     _selectedNodeId = '';
